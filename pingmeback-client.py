@@ -1,7 +1,5 @@
 #!/usr/bin/python
-import os,sys,json,socket,shlex,requests,argparse
-import time,graphitesend
-import argparse
+import time,graphitesend,requests,socket,json,argparse
 
 #Function to send data to graphite
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):

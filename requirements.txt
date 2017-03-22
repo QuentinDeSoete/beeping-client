@@ -1,0 +1,13 @@
+boto==2.34.0
+chardet==2.3.0
+colorama==0.3.2
+crcmod==1.7
+google-compute-engine==2.3.4
+graphitesend==0.7.0
+html5lib==0.999
+httplib2==0.9
+python-apt==0.9.3.12
+python-dateutil==2.2
+requests==2.4.3
+six==1.8.0
+urllib3==1.9.1
