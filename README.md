@@ -4,6 +4,15 @@ This is a simple client to use with [Pingmeback](https://github.com/yanc0/pingme
 You can use this client in a cron or with [dkron](http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
 The client will redirect the Pingmeback return in a backend theat you will specified (graphite by default)
 
+Thanks to :
+* YancO for his good work on [Pingmeback](https://github.com/yanc0/pingmeback)
+* daniellawrence for his good librairie [graphitesend](https://github.com/daniellawrence/graphitesend)
+
+## Requirements
+
+* [graphitesend](https://github.com/daniellawrence/graphitesend)
+* [requests](http://docs.python-requests.org/en/master/user/install/)
+
 ## Usage
 
 The minimal command to use this client is :
