@@ -1,7 +1,7 @@
 # pingmeback-python-client v0.1.0
 
-This is a simple client to use with [Pingmeback] (https://github.com/yanc0/pingmeback) made by YancO.
-You can use this client in a cron or with [dkron] (http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
+This is a simple client to use with [Pingmeback](https://github.com/yanc0/pingmeback) made by YancO.
+You can use this client in a cron or with [dkron](http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
 The client will redirect the Pingmeback return in a backend theat you will specified (graphite by default)
 
 ## Usage
@@ -18,7 +18,7 @@ You have other parameters that you can specify like :
 * the '-p' wich is a string that Pingmeback will check on your page, it's usefull to check if your website has been hacked or not
 * the '-i' wich is the insecure mod, if your SSL certificate is deprecated or broken set this to true to still have check
 * the '-t' wich is the timeout, it is the time after wich Pingmecack will tell you that your website had a timeout (default is 20 sec)
-* the '-b' wich is the backend that you want to send your data to, the default backend is set to [graphite] (http://graphite.readthedocs.io)
+* the '-b' wich is the backend that you want to send your data to, the default backend is set to [graphite](http://graphite.readthedocs.io)
 * the '-s' wich is the schema under wich you want to set your data in graphite for example
 * the '-H' wich is the host of your backend, the default value is localhost
 * the '-P' wich is the port of your backend, the default value is 2003
