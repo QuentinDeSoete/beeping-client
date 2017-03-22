@@ -11,17 +11,17 @@ The minimal command to use this client is :
 ./pingmeback-client.py -u example.site.com -upmb host.instance.pingmeback.com 
 ```
 You need to specify twoo parameters :
-	* the '-u' wich is the url of the website that you want to check.
-	* the -'upmb' wich is the url or ip to reach your Pingmeback instance.
+* the '-u' wich is the url of the website that you want to check.
+* the -'upmb' wich is the url or ip to reach your Pingmeback instance.
  
 You have other parameters that you can specify like :
-	* the '-p' wich is a string that Pingmeback will check on your page, it's usefull to check if your website has been hacked or not
-	* the '-i' wich is the insecure mod, if your SSL certificate is deprecated or broken set this to true to still have check
-	* the '-t' wich is the timeout, it is the time after wich Pingmecack will tell you that your website had a timeout (default is 20 sec)
-	* the '-b' wich is the backend that you want to send your data to, the default backend is set to [graphite] (http://graphite.readthedocs.io)
-	* the '-s' wich is the schema under wich you want to set your data in graphite for example
-	* the '-H' wich is the host of your backend, the default value is localhost
-	* the '-P' wich is the port of your backend, the default value is 2003
+* the '-p' wich is a string that Pingmeback will check on your page, it's usefull to check if your website has been hacked or not
+* the '-i' wich is the insecure mod, if your SSL certificate is deprecated or broken set this to true to still have check
+* the '-t' wich is the timeout, it is the time after wich Pingmecack will tell you that your website had a timeout (default is 20 sec)
+* the '-b' wich is the backend that you want to send your data to, the default backend is set to [graphite] (http://graphite.readthedocs.io)
+* the '-s' wich is the schema under wich you want to set your data in graphite for example
+* the '-H' wich is the host of your backend, the default value is localhost
+* the '-P' wich is the port of your backend, the default value is 2003
 
 Example to change your backend host and port :
 ```
