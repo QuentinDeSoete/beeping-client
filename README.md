@@ -2,7 +2,7 @@
 
 This is a simple client to use with [Pingmeback](https://github.com/yanc0/pingmeback) made by YancO.
 You can use this client in a cron or with [dkron](http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
-The client will redirect the Pingmeback return in a backend theat you will specified (graphite by default)
+The client will redirect the Pingmeback return in a backend that you will specified (graphite by default)
 
 Thanks to :
 * YancO for his good work on [Pingmeback](https://github.com/yanc0/pingmeback)
@@ -19,18 +19,18 @@ The minimal command to use this client is :
 ```
 ./pingmeback-client.py -u example.site.com -upmb host.instance.pingmeback.com 
 ```
-You need to specify twoo parameters :
-* the '-u' wich is the url of the website that you want to check.
-* the -'upmb' wich is the url or ip to reach your Pingmeback instance.
+You need to specify two parameters :
+* the '-u' which is the url of the website that you want to check.
+* the -'upmb' which is the url or ip to reach your Pingmeback instance.
  
 You have other parameters that you can specify like :
-* the '-p' wich is a string that Pingmeback will check on your page, it's usefull to check if your website has been hacked or not
-* the '-i' wich is the insecure mod, if your SSL certificate is deprecated or broken set this to true to still have check
-* the '-t' wich is the timeout, it is the time after wich Pingmecack will tell you that your website had a timeout (default is 20 sec)
-* the '-b' wich is the backend that you want to send your data to, the default backend is set to [graphite](http://graphite.readthedocs.io)
-* the '-s' wich is the schema under wich you want to set your data in graphite for example
-* the '-H' wich is the host of your backend, the default value is localhost
-* the '-P' wich is the port of your backend, the default value is 2003
+* the '-p' which is a string that Pingmeback will check on your page, it's useful to check if your website has been hacked or not
+* the '-i' which is the insecure mod, if your SSL certificate is deprecated or broken set this to true to still have check
+* the '-t' which is the timeout, it is the time after which Pingmeback will tell you that your website had a timeout (default is 20 sec)
+* the '-b' which is the backend that you want to send your data to, the default backend is set to [graphite](http://graphite.readthedocs.io)
+* the '-s' which is the schema under which you want to set your data in graphite for example
+* the '-H' which is the host of your backend, the default value is localhost
+* the '-P' which is the port of your backend, the default value is 2003
 
 Example to change your backend host and port :
 ```
