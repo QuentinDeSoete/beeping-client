@@ -12,6 +12,7 @@ Thanks to :
 
 * [graphitesend](https://github.com/daniellawrence/graphitesend)
 * [requests](http://docs.python-requests.org/en/master/user/install/)
+* [influxdb](https://github.com/influxdata/influxdb-python)
 
 ## Usage
 
@@ -31,6 +32,9 @@ You have other parameters that you can specify like :
 * the '-s' which is the schema under which you want to set your data in graphite for example
 * the '-H' which is the host of your backend, the default value is localhost
 * the '-P' which is the port of your backend, the default value is 2003
+* the '-U' which is the user of your backend if you need to be loged in like in influxdb
+* the '-pwd' which is the password of your backend if you need to be logged in like in influxdb
+* the '-db' which is the database where you want to store your data (required for influxdb)
 
 Example to change your backend host and port :
 ```
