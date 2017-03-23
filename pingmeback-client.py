@@ -1,5 +1,8 @@
 #!/usr/bin/python
-import time,graphitesend,requests,socket,json,argparse
+import time,requests,socket,json,argparse
+import graphitesend
+from datetime import datetime
+from influxdb import InfluxDBClient
 
 #Function to send data to graphite
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
@@ -13,6 +16,19 @@ def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
 	if pmb_return["ssl"] == True:
 		g.send(schema+"."+"tls_handshake",pmb_return["tls_handshake"])
 		g.send(schema+"."+"ssl_days_left",pmb_return["ssl_days_left"])
+
+def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db):
+	client = InfluxDBClient(backend_addr, backend_port, backend_user, backend_pwd, backend_db)
+	current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+	client.write_points([{"measurement": "http_status","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["http_status_code"]}}])
+	client.write_points([{"measurement": "http_request_time","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["http_request_time"]}}])
+	client.write_points([{"measurement": "dns_lookup","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["dns_lookup"]}}])
+	client.write_points([{"measurement": "tcp_connection","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tcp_connection"]}}])
+	client.write_points([{"measurement": "server_processing","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["server_processing"]}}])
+	client.write_points([{"measurement": "content_transfer","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["content_transfer"]}}])
+	if pmb_return["ssl"] == True:
+		client.write_points([{"measurement": "tls_handshake","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tls_handshake"]}}])
+		client.write_points([{"measurement": "ssl_days_left","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["ssl_days_left"]}}])
 
 #Variables declarations
 cmd = ""
@@ -29,6 +45,9 @@ parser.add_argument('-b', help='backend to send your data, default is graphite',
 parser.add_argument('-s', help='schema to stored your data in graphite\n for example: customer.app.env.servername', default="test.test.prod.host.pingmeback")
 parser.add_argument('-H', help='host of your backend, default is loaclhost', default="localhost")
 parser.add_argument('-P', type=int, help='port of your backend, default is graphite port', default=2003)
+parser.add_argument('-U', help='user of your backend')
+parser.add_argument('-pwd', help='password of your backend')
+parser.add_argument('-db', help='name of your backedn db')
 
 #Feeding variables
 args = parser.parse_args()
@@ -44,6 +63,9 @@ backend=args.b
 schema=args.s
 backend_addr=args.host
 backend_port=args.port
+backend_db=args.db
+backend_user=args.U
+backend_pwd=args.pwd
 
 #Open socket
 r = requests.post(url_pingmeback, data=json.dumps(payload))
@@ -54,3 +76,6 @@ if pmb_return.has_key("message"):
 
 if backend == "graphite":
 	send_data_graphite(schema, backend_addr, backend_port, pmb_return)
+
+if backend == "influxdb":
+	send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db)
