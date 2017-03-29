@@ -3,6 +3,8 @@ import time,requests,socket,json,argparse
 import graphitesend
 from datetime import datetime
 from influxdb import InfluxDBClient
+from prometheus_client import start_http_server, Summary
+import random
 
 #Function to send data to graphite
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
@@ -17,6 +19,7 @@ def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
 		g.send(schema+"."+"tls_handshake",pmb_return["tls_handshake"])
 		g.send(schema+"."+"ssl_days_left",pmb_return["ssl_days_left"])
 
+#Function to send data to influxdb
 def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db):
 	client = InfluxDBClient(backend_addr, backend_port, backend_user, backend_pwd, backend_db)
 	current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -29,6 +32,10 @@ def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bak
 	if pmb_return["ssl"] == True:
 		client.write_points([{"measurement": "tls_handshake","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tls_handshake"]}}])
 		client.write_points([{"measurement": "ssl_days_left","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["ssl_days_left"]}}])
+
+#Function send data to prometheus
+def send_data_to_prometheus():
+	
 
 #Variables declarations
 cmd = ""
