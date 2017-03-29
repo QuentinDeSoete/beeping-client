@@ -13,6 +13,7 @@ Thanks to :
 * [graphitesend](https://github.com/daniellawrence/graphitesend)
 * [requests](http://docs.python-requests.org/en/master/user/install/)
 * [influxdb](https://github.com/influxdata/influxdb-python)
+* [prometheus/client_python](https://github.com/prometheus/client_python#custom-collectors)
 
 ## Usage
 
