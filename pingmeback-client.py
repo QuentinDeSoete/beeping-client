@@ -1,5 +1,10 @@
 #!/usr/bin/python
-import time,graphitesend,requests,socket,json,argparse
+import time,requests,socket,json,argparse
+import graphitesend
+from datetime import datetime
+from influxdb import InfluxDBClient
+from prometheus_client import start_http_server, Summary, REGISTRY, Metric
+import random
 
 #Function to send data to graphite
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
@@ -13,6 +18,35 @@ def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
 	if pmb_return["ssl"] == True:
 		g.send(schema+"."+"tls_handshake",pmb_return["tls_handshake"])
 		g.send(schema+"."+"ssl_days_left",pmb_return["ssl_days_left"])
+
+#Function to send data to influxdb
+def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db):
+	client = InfluxDBClient(backend_addr, backend_port, backend_user, backend_pwd, backend_db)
+	current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+	client.write_points([{"measurement": "http_status","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["http_status_code"]}}])
+	client.write_points([{"measurement": "http_request_time","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["http_request_time"]}}])
+	client.write_points([{"measurement": "dns_lookup","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["dns_lookup"]}}])
+	client.write_points([{"measurement": "tcp_connection","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tcp_connection"]}}])
+	client.write_points([{"measurement": "server_processing","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["server_processing"]}}])
+	client.write_points([{"measurement": "content_transfer","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["content_transfer"]}}])
+	if pmb_return["ssl"] == True:
+		client.write_points([{"measurement": "tls_handshake","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tls_handshake"]}}])
+		client.write_points([{"measurement": "ssl_days_left","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["ssl_days_left"]}}])
+
+#Function send data to prometheus
+class Send_data_to_prometheus(object):
+	def collect(self):
+		c = Metric('pingmeback', 'Mectrics return by pingmeback', 'summary')
+		c.add_sample(['http_status_code'], value=pmb_return["http_status_code"], labels={})
+		c.add_sample(['http_request_time'], value=pmb_return["http_request_time"], labels={})
+		c.add_sample(['dns_lookup'], value=pmb_return["dns_lookup"], labels={})
+		c.add_sample(['tcp_connection'], value=pmb_return["tcp_connection"], labels={})
+		c.add_sample(['server_processing'], value=pmb_return["server_processing"], labels={})
+		c.add_sample(['content_transfer'], value=pmb_return["content_transfer"], labels={})
+		if pmb_return["ssl"] == True:
+			c.add_sample(['tls_handshake'], value=pmb_return["tls_handshake"], labels={})
+			c.add_sample(['ssl_days_left'], value=pmb_return["ssl_days_left"], labels={})
+		yield c
 
 #Variables declarations
 cmd = ""
@@ -29,6 +63,9 @@ parser.add_argument('-b', help='backend to send your data, default is graphite',
 parser.add_argument('-s', help='schema to stored your data in graphite\n for example: customer.app.env.servername', default="test.test.prod.host.pingmeback")
 parser.add_argument('-H', help='host of your backend, default is loaclhost', default="localhost")
 parser.add_argument('-P', type=int, help='port of your backend, default is graphite port', default=2003)
+parser.add_argument('-U', help='user of your backend')
+parser.add_argument('-pwd', help='password of your backend')
+parser.add_argument('-db', help='name of your backedn db')
 
 #Feeding variables
 args = parser.parse_args()
@@ -42,15 +79,25 @@ if args.t != "":
 	payload["timeout"]=args.t
 backend=args.b
 schema=args.s
-backend_addr=args.host
-backend_port=args.port
+backend_addr=args.H
+backend_port=args.P
+backend_db=args.db
+backend_user=args.U
+backend_pwd=args.pwd
 
 #Open socket
 r = requests.post(url_pingmeback, data=json.dumps(payload))
 pmb_return=r.json()
 if pmb_return.has_key("message"):
-	print "Pingmeback maybe crashed !"
+	print pmb_return["message"]
 	sys.exit(0)
 
 if backend == "graphite":
 	send_data_graphite(schema, backend_addr, backend_port, pmb_return)
+
+if backend == "influxdb":
+	send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db)
+
+if backend == "prometheus":
+	start_http_server(backend_port)
+	REGISTRY.register(Send_data_to_prometheus())

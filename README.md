@@ -1,4 +1,4 @@
-# pingmeback-python-client v0.1.0
+# pingmeback-python-client v0.2.0
 
 This is a simple client to use with [Pingmeback](https://github.com/yanc0/pingmeback) made by YancO.
 You can use this client in a cron or with [dkron](http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
@@ -12,6 +12,8 @@ Thanks to :
 
 * [graphitesend](https://github.com/daniellawrence/graphitesend)
 * [requests](http://docs.python-requests.org/en/master/user/install/)
+* [influxdb](https://github.com/influxdata/influxdb-python)
+* [prometheus/client_python](https://github.com/prometheus/client_python#custom-collectors)
 
 ## Usage
 
@@ -31,6 +33,9 @@ You have other parameters that you can specify like :
 * the '-s' which is the schema under which you want to set your data in graphite for example
 * the '-H' which is the host of your backend, the default value is localhost
 * the '-P' which is the port of your backend, the default value is 2003
+* the '-U' which is the user of your backend if you need to be loged in like in influxdb
+* the '-pwd' which is the password of your backend if you need to be logged in like in influxdb
+* the '-db' which is the database where you want to store your data (required for influxdb)
 
 Example to change your backend host and port :
 ```
@@ -44,7 +49,10 @@ Example to change the schema that you want to send to graphite :
 
 ## To Do
 
-- [ ] Add other backend
+- [x] Add support for influxdb
+- [x] Add support for prometheus
+- [ ] Add support for datadog
+- [ ] Add support for opentsdb
 
 ## Contributing
 
