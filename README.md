@@ -49,7 +49,7 @@ Example to change the schema that you want to send to graphite :
 ## To Do
 
 - [x] Add support for influxdb
-- [ ] Add support for prometheus
+- [x] Add support for prometheus
 - [ ] Add support for datadog
 - [ ] Add support for opentsdb
 
