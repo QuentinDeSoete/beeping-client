@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import time,requests,socket,json,argparse
+import time,requests,socket,json,argparse,sys
 import graphitesend
 from datetime import datetime
 from influxdb import InfluxDBClient
@@ -88,8 +88,8 @@ backend_pwd=args.pwd
 #Open socket
 r = requests.post(url_pingmeback, data=json.dumps(payload))
 pmb_return=r.json()
-if pmb_return.has_key("message"):
-	print pmb_return["message"]
+if "message" in pmb_return:
+	print (pmb_return["message"])
 	sys.exit(0)
 
 if backend == "graphite":
