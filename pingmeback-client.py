@@ -3,7 +3,6 @@ import time,requests,socket,json,argparse,sys
 import graphitesend
 from datetime import datetime
 from influxdb import InfluxDBClient
-from prometheus_client import start_http_server, Summary, REGISTRY, Metric
 import random
 
 #Function to send data to graphite
@@ -32,21 +31,6 @@ def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bak
 	if pmb_return["ssl"] == True:
 		client.write_points([{"measurement": "tls_handshake","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["tls_handshake"]}}])
 		client.write_points([{"measurement": "ssl_days_left","tags": {"host": payload["url"],"region": "" } ,"time": current_time,"fields": {"value": mb_return["ssl_days_left"]}}])
-
-#Function send data to prometheus
-class Send_data_to_prometheus(object):
-	def collect(self):
-		c = Metric('pingmeback', 'Mectrics return by pingmeback', 'summary')
-		c.add_sample(['http_status_code'], value=pmb_return["http_status_code"], labels={})
-		c.add_sample(['http_request_time'], value=pmb_return["http_request_time"], labels={})
-		c.add_sample(['dns_lookup'], value=pmb_return["dns_lookup"], labels={})
-		c.add_sample(['tcp_connection'], value=pmb_return["tcp_connection"], labels={})
-		c.add_sample(['server_processing'], value=pmb_return["server_processing"], labels={})
-		c.add_sample(['content_transfer'], value=pmb_return["content_transfer"], labels={})
-		if pmb_return["ssl"] == True:
-			c.add_sample(['tls_handshake'], value=pmb_return["tls_handshake"], labels={})
-			c.add_sample(['ssl_days_left'], value=pmb_return["ssl_days_left"], labels={})
-		yield c
 
 #Variables declarations
 cmd = ""
@@ -86,6 +70,7 @@ backend_user=args.U
 backend_pwd=args.pwd
 
 #Open socket
+print json.dumps(payload)
 r = requests.post(url_pingmeback, data=json.dumps(payload))
 pmb_return=r.json()
 if "message" in pmb_return:
@@ -97,7 +82,3 @@ if backend == "graphite":
 
 if backend == "influxdb":
 	send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db)
-
-if backend == "prometheus":
-	start_http_server(backend_port)
-	REGISTRY.register(Send_data_to_prometheus())
