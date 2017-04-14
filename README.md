@@ -13,7 +13,6 @@ Thanks to :
 * [graphitesend](https://github.com/daniellawrence/graphitesend)
 * [requests](http://docs.python-requests.org/en/master/user/install/)
 * [influxdb](https://github.com/influxdata/influxdb-python)
-* [prometheus/client_python](https://github.com/prometheus/client_python#custom-collectors)
 
 ## Usage
 
@@ -50,7 +49,6 @@ Example to change the schema that you want to send to graphite :
 ## To Do
 
 - [x] Add support for influxdb
-- [x] Add support for prometheus
 - [ ] Add support for datadog
 - [ ] Add support for opentsdb
 
