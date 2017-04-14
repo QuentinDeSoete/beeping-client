@@ -70,7 +70,7 @@ backend_user=args.U
 backend_pwd=args.pwd
 
 #Open socket
-print json.dumps(payload)
+#print json.dumps(payload)
 r = requests.post(url_pingmeback, data=json.dumps(payload))
 pmb_return=r.json()
 if "message" in pmb_return:
