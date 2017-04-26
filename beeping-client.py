@@ -8,8 +8,8 @@ import random
 #Function to send data to graphite
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
 	g=graphitesend.init(graphite_server=backend_addr, graphite_port=backend_port, lowercase_metric_names=True, system_name='', prefix='')
-	for i in pbm_return:
-		if type(val) == int:
+	for i in pmb_return:
+		if type(pmb_return[i]) == int:
 			g.send(schema+"."+i,pmb_return[i])
 		
 #Function to send data to influxdb
