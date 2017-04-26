@@ -1,4 +1,4 @@
-# pingmeback-python-client v0.2.0
+# beeping-client v0.2.0
 
 This is a simple client to use with [beeping](https://github.com/yanc0/beeping) made by YancO.
 You can use this client in a cron or with [dkron](http://dkron.io) to check the response time of your website and the validity of your SSL certificates.
