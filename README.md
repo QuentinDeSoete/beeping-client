@@ -58,7 +58,7 @@ Example to change the schema that you want to send to graphite :
 
 Feel free to make a pull request.
 
-## Licence
+## Licence
 
 ```
 MIT License
