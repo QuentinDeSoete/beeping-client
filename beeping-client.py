@@ -9,9 +9,17 @@ import random
 def send_data_graphite(schema, backend_addr, backend_port, pmb_return):
 	g=graphitesend.init(graphite_server=backend_addr, graphite_port=backend_port, lowercase_metric_names=True, system_name='', prefix='')
 	for i in pmb_return:
+		if i == "ssl":
+			for j in pmb_return["ssl"]:
+				if type(pmb_return["ssl"][j]) == int:
+					g.send(schema+"."+j,pmb_return["ssl"][j])
+		if i == "timeline":
+			for j in pmb_return["timeline"]:
+				if type(pmb_return["timeline"][j]) == int:
+					g.send(schema+"."+j,pmb_return["timeline"][j])
 		if type(pmb_return[i]) == int:
 			g.send(schema+"."+i,pmb_return[i])
-		
+
 #Function to send data to influxdb
 def send_data_influxdb(backend_addr, backend_port, pmb_return, backend_user, bakend_pwd, backend_db):
 	client = InfluxDBClient(backend_addr, backend_port, backend_user, backend_pwd, backend_db)
