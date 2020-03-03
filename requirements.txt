@@ -1,6 +1,6 @@
 Jinja2==2.7.3
 MarkupSafe==0.23
-PyYAML==3.11
+PyYAML==5.1
 ansible==2.6.18
 argparse==1.2.1
 boto==2.34.0
