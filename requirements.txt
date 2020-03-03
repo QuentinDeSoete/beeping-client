@@ -13,7 +13,7 @@ graphitesend==0.10.0
 html5lib==0.999
 httplib2==0.9
 influxdb==4.0.0
-paramiko==1.15.1
+paramiko==2.0.9
 prometheus-client==0.0.19
 pycrypto==2.6.1
 python-dateutil==2.6.0
