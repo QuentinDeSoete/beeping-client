@@ -20,6 +20,6 @@ python-dateutil==2.6.0
 pytz==2016.10
 requests==2.20.0
 six==1.10.0
-urllib3==1.24.2
+urllib3==1.26.5
 wheel==0.24.0
 wsgiref==0.1.2
