@@ -10,7 +10,7 @@ crcmod==1.7
 ecdsa==0.13.3
 google-compute-engine==2.3.5
 graphitesend==0.10.0
-html5lib==0.999
+html5lib==0.99999999
 httplib2==0.9
 influxdb==4.0.0
 paramiko==2.0.9
